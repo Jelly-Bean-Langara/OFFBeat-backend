@@ -1,20 +1,20 @@
-import express from 'express';
-import routes from './routes';
+const cors = require('cors')
+const express = require('express')
 
-class App {
-  constructor() {
-    this.server = express();
-    this.middlewares();
-    this.routes();
-  }
+const routes = require('./routes')
 
-  middlewares() {
-    this.server.use(express.json());
-  }
+const bodyParser = require('body-parser')
+const compression = require('compression')
+const PORT = 80;
 
-  routes() {
-    this.server.use(routes);
-  }
-}
+const app = express();
 
-export default new App().server;
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors())
+app.use(compression())
+app.use('/', routes);
+
+
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+

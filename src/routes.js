@@ -1,7 +1,8 @@
-import { Router } from 'express';
+/* Route Module */
+const express = require('express');
+const routes = express.Router();
+const categories = require('./Controllers/categories-controller')
 
-const routes = new Router();
+routes.get('/journey/categories', categories.getAll);
 
-routes.get('/', (req, res) => res.json({ message: 'Hello World!' }));
-
-export default routes;
+module.exports = routes;
