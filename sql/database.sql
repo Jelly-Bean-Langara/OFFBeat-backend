@@ -20,7 +20,7 @@ CREATE TABLE `moments` (
 	`moment_description` TEXT NOT NULL,
 	`moment_latitude` varchar(255) NOT NULL,
 	`moment_longitude` varchar(255) NOT NULL,
-	`moment_location_name` varchar(255) NOT NULL,
+	`moment_location_name` TEXT NOT NULL,
 	`post_id` INT NOT NULL,
 	PRIMARY KEY (`moment_id`)
 );

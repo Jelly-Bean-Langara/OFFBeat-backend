@@ -1,18 +1,16 @@
 import mysql from 'mysql';
 import databaseConfig from '../config/database';
 
-class ExampleModel {
+class Category {
   create(data) {
     const db = mysql.createPool(databaseConfig);
 
     const columns = {
-      post_title: data.title,
-      post_created_at: mysql.raw('NOW()'),
-      category_id: data.categoryId,
-      user_id: data.userId,
+      category_title: data.title,
+      category_cover: data.cover,
     };
 
-    const query = 'INSERT INTO posts SET ?';
+    const query = 'INSERT INTO categories SET ?';
 
     return new Promise((resolve, reject) => {
       db.getConnection((err, connection) => {
@@ -31,4 +29,4 @@ class ExampleModel {
   }
 }
 
-export default new ExampleModel();
+export default new Category();
