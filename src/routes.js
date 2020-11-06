@@ -18,5 +18,6 @@ routes.post('/create-moment', uploadPostPicture.array('photos', 6), MomentContro
 routes.post('/create-category', CategoryController.store);
 routes.post('/create-user', UserController.store);
 routes.get('/get-all-categories', CategoryController.index);
+routes.get('/get-all-moments-from-post', MomentController.index);
 
 export default routes;
