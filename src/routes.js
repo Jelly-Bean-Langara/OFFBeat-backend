@@ -17,5 +17,6 @@ routes.post('/create-post', PostController.store);
 routes.post('/create-moment', uploadPostPicture.array('photos', 6), MomentController.store);
 routes.post('/create-category', CategoryController.store);
 routes.post('/create-user', UserController.store);
+routes.get('/get-all-categories', CategoryController.index);
 
 export default routes;

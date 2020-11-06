@@ -27,6 +27,27 @@ class Category {
       });
     });
   }
+
+  getAll() {
+    const db = mysql.createPool(databaseConfig);
+
+    const query = 'SELECT * FROM categories ORDER BY category_title';
+
+    return new Promise((resolve, reject) => {
+      db.getConnection((err, connection) => {
+        if (err) reject(err);
+
+        connection.query(query, (error, results) => {
+          connection.release();
+          connection.destroy();
+
+          if (error) reject(error);
+
+          resolve(results);
+        });
+      });
+    });
+  }
 }
 
 export default new Category();

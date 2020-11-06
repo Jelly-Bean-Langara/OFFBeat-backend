@@ -13,11 +13,21 @@ class CategoryController {
     }
 
     try {
-      const category = await Category.create(req.body);
+      const result = await Category.create(req.body);
 
-      category.message = 'Moment created';
+      result.message = 'Moment created';
 
-      return res.json(category);
+      return res.json(result);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+
+  async index(req, res) {
+    try {
+      const result = await Category.getAll();
+
+      return res.json(result);
     } catch (err) {
       return res.status(500).json(err);
     }
