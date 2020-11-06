@@ -6,6 +6,7 @@ import CategoryController from './controllers/CategoryController';
 import ExampleController from './controllers/ExampleController';
 import MomentController from './controllers/MomentController';
 import PostController from './controllers/PostController';
+import UserController from './controllers/UserController';
 
 const routes = new Router();
 const uploadPostPicture = multer(multerPostConfig);
@@ -15,5 +16,6 @@ routes.get('/', ExampleController.index);
 routes.post('/create-post', PostController.store);
 routes.post('/create-moment', uploadPostPicture.array('photos', 6), MomentController.store);
 routes.post('/create-category', CategoryController.store);
+routes.post('/create-user', UserController.store);
 
 export default routes;

@@ -35,13 +35,12 @@ CREATE TABLE `moments_pictures` (
 CREATE TABLE `users` (
 	`user_id` INT NOT NULL AUTO_INCREMENT,
 	`user_name` varchar(255) NOT NULL,
-	`user_middle_name` varchar(255) NOT NULL,
-	`user_last_name` varchar(255) NOT NULL,
+	`user_middle_name` varchar(255),
+	`user_last_name` varchar(255),
 	`user_email` varchar(255) NOT NULL,
-	`user_password` varchar(255) NOT NULL,
 	`user_created_at` TIMESTAMP NOT NULL,
 	`user_allow` BOOLEAN NOT NULL DEFAULT '1',
-	`user_last_login` TIMESTAMP NOT NULL,
+	`user_last_login` TIMESTAMP,
 	PRIMARY KEY (`user_id`)
 );
 
