@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import Post from '../models/Post';
 
-class ExampleController {
+class PostController {
   async store(req, res) {
     const schema = yup.object().shape({
       title: yup.string().required(),
@@ -23,6 +23,23 @@ class ExampleController {
       return res.status(500).json(err);
     }
   }
+
+  async index(req, res) {
+    const { categoryId, quantity } = req.query;
+
+    if (quantity === undefined) {
+      return res.status(400).json({ error: 'you must inform how may posts you want' });
+    }
+
+    try {
+      if (categoryId !== undefined && !isNaN(parseInt(categoryId))) {
+        const result = await Post.getByCategoryId(categoryId, quantity);
+        return res.json(result);
+      }
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
 }
 
-export default new ExampleController();
+export default new PostController();
