@@ -1,7 +1,7 @@
 import mysql from 'mysql';
 import databaseConfig from '../config/database';
 
-class ExampleModel {
+class Post {
   create(data) {
     const db = mysql.createPool(databaseConfig);
 
@@ -29,6 +29,56 @@ class ExampleModel {
       });
     });
   }
+
+  changeVisibility(data) {
+    const db = mysql.createPool(databaseConfig);
+
+    const columns = {
+      post_visibility: data.postVisibility,
+    };
+
+    const query = 'UPDATE posts SET ? WHERE post_id = ?';
+
+    return new Promise((resolve, reject) => {
+      db.getConnection((err, connection) => {
+        if (err) reject(err);
+
+        connection.query(query, [columns, data.postId], (error, results) => {
+          connection.release();
+          connection.destroy();
+
+          if (error) reject(error);
+
+          resolve(results);
+        });
+      });
+    });
+  }
+
+  getByCategoryId(categoryId, quantity) {
+    const db = mysql.createPool(databaseConfig);
+
+    const columns = {
+      category_id: categoryId,
+    };
+
+    const query = 'SELECT p.*, (SELECT COUNT(moment_id) FROM moments WHERE post_id = p.post_id) AS moments FROM posts AS p WHERE ? ORDER BY p.post_created_at DESC LIMIT 0,?';
+
+    return new Promise((resolve, reject) => {
+      db.getConnection((err, connection) => {
+        if (err) reject(err);
+
+        connection.query(query, [columns, parseInt(quantity)], (error, results) => {
+          connection.release();
+          connection.destroy();
+
+          if (error) reject(error);
+
+          resolve(results);
+        });
+      });
+    });
+  }
 }
 
-export default new ExampleModel();
+export default new Post();

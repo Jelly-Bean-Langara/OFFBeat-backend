@@ -48,6 +48,27 @@ class Category {
       });
     });
   }
+
+  getOne(categoryId) {
+    const db = mysql.createPool(databaseConfig);
+
+    const query = 'SELECT * FROM categories WHERE category_id = ?';
+
+    return new Promise((resolve, reject) => {
+      db.getConnection((err, connection) => {
+        if (err) reject(err);
+
+        connection.query(query, categoryId, (error, results) => {
+          connection.release();
+          connection.destroy();
+
+          if (error) reject(error);
+
+          resolve(results);
+        });
+      });
+    });
+  }
 }
 
 export default new Category();
