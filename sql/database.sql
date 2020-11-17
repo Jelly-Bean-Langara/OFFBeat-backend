@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS posts (
 	post_created_at TIMESTAMP NOT NULL,
   post_visibility BOOLEAN DEFAULT '0',
 	category_id INT NOT NULL,
-	user_id INT NOT NULL,
+	user_id varchar(255) NOT NULL,
 	PRIMARY KEY (post_id),
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -38,13 +38,13 @@ CREATE TABLE IF NOT EXISTS moments_pictures (
 );
 
 CREATE TABLE IF NOT EXISTS users (
-	user_id INT NOT NULL AUTO_INCREMENT,
+	user_id varchar(255) NOT NULL,
 	user_name varchar(255) NOT NULL,
-	user_middle_name varchar(255),
-	user_last_name varchar(255),
 	user_email varchar(255) NOT NULL,
+	user_picture varchar(255) NOT NULL,
 	user_created_at TIMESTAMP NOT NULL,
 	user_allow BOOLEAN NOT NULL DEFAULT '1',
-	user_last_login TIMESTAMP,
+	user_last_login TIMESTAMP NOT NULL,
+  latest_refresh_token varchar(255) NOT NULL,
 	PRIMARY KEY (user_id)
 );
