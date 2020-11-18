@@ -40,6 +40,21 @@ class PostController {
       return res.status(500).json(err);
     }
   }
+
+  async show(req, res) {
+    const { postId } = req.query;
+
+    if (postId === undefined) {
+      return res.status(400).json({ error: 'you must inform how may posts you want' });
+    }
+
+    try {
+      const post = await Post.getById(postId);
+      return res.json(post[0]);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
 }
 
 export default new PostController();

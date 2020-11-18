@@ -79,6 +79,27 @@ class Post {
       });
     });
   }
+
+  getById(postId) {
+    const db = mysql.createPool(databaseConfig);
+
+    const query = 'SELECT p.*, (SELECT COUNT(moment_id) FROM moments WHERE post_id = p.post_id) AS moments FROM posts AS p WHERE p.post_id = ?';
+
+    return new Promise((resolve, reject) => {
+      db.getConnection((err, connection) => {
+        if (err) reject(err);
+
+        connection.query(query, postId, (error, results) => {
+          connection.release();
+          connection.destroy();
+
+          if (error) reject(error);
+
+          resolve(results);
+        });
+      });
+    });
+  }
 }
 
 export default new Post();
