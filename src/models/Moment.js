@@ -56,6 +56,57 @@ class Moment {
       });
     });
   }
+
+  insertPhotos(momentId, filename) {
+    const db = mysql.createPool(databaseConfig);
+
+    const columns = {
+      moment_id: momentId,
+      moment_picture_file_name: filename,
+    };
+
+    const query = 'INSERT INTO moments_pictures SET ?';
+
+    return new Promise((resolve, reject) => {
+      db.getConnection((err, connection) => {
+        if (err) reject(err);
+
+        connection.query(query, columns, (error, results) => {
+          connection.release();
+          connection.destroy();
+
+          if (error) reject(error);
+
+          resolve(results);
+        });
+      });
+    });
+  }
+
+  getPhotos(momentId) {
+    const db = mysql.createPool(databaseConfig);
+
+    const columns = {
+      moment_id: momentId,
+    };
+
+    const query = 'SELECT moment_picture_file_name FROM moments_pictures WHERE ?';
+
+    return new Promise((resolve, reject) => {
+      db.getConnection((err, connection) => {
+        if (err) reject(err);
+
+        connection.query(query, columns, (error, results) => {
+          connection.release();
+          connection.destroy();
+
+          if (error) reject(error);
+
+          resolve(results);
+        });
+      });
+    });
+  }
 }
 
 export default new Moment();
