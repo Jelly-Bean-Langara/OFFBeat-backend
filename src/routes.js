@@ -10,15 +10,25 @@ import PostCoverController from './controllers/PostCoverController';
 import PostVisibilityController from './controllers/PostVisibilityController';
 import UserController from './controllers/UserController';
 
+import UserAuthController from './controllers/UserAuthController';
+import UserAuthMiddleware from './middlewares/UserAuthMiddleware'
+
 const routes = new Router();
 const uploadPostPicture = multer(multerPostConfig);
 const uploadProfilePicture = multer(multerProfileConfig);
 
+// Authorize user to get Auth Code.
+routes.get('/auth', UserAuthController.auth);
+// get Auth code from user and return the url scheme to open app 
+routes.get('/oauth2callback', UserAuthController.oauth2callback);
+
+// get user details (required: user_id, token)
+routes.post('/users', UserAuthMiddleware, UserController.show);
 routes.get('/', (req, res) => { res.json({ message: 'hey' }); });
 routes.post('/create-post', PostController.store);
 routes.post('/create-moment', uploadPostPicture.array('photos', 8), MomentController.store);
 routes.post('/create-category', CategoryController.store);
-routes.post('/create-user', UserController.store);
+// routes.post('/create-user', UserController.store);
 routes.get('/get-all-categories', CategoryController.index);
 routes.get('/get-all-moments-from-post', MomentController.index);
 routes.put('/update-post-visibility', PostVisibilityController.update);
