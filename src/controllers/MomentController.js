@@ -18,6 +18,13 @@ class MomentController {
 
     try {
       const result = await Moment.create(req.body);
+
+      await Promise.all(req.files.map(async (file) => {
+        const { filename } = file;
+
+        await Moment.insertPhotos(result.insertId, filename);
+      }));
+
       result.message = 'Moment Created';
 
       return res.json(result);
@@ -35,8 +42,6 @@ class MomentController {
 
     try {
       const result = await Moment.getAllByPostId(postId);
-
-      result.message = 'Moment created';
 
       return res.json(result);
     } catch (err) {
