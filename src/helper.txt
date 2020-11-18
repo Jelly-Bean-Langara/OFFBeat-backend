@@ -1,0 +1,14 @@
+ * Response terminology
+ https://developers.google.com/identity/protocols/oauth2/openid-connect
+
+ * Verify user if access token is valid
+ https://oauth2.googleapis.com/tokeninfo?access_token=<AT>
+
+
+ * Refresh token Expiry
+ The Google Auth server issued Refresh tokens never 
+ expire — that's the whole point of the refresh tokens. ... 
+ So in short you can use refresh tokens again and again until 
+ the user who authorized the access revokes access to your application.
+
+

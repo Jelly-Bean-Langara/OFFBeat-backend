@@ -1,29 +1,48 @@
 import * as yup from 'yup';
-import User from '../models/User';
+import UserModel from '../models/UserModel';
+
+const statusSuccess = "success";
+const statusFailed = "failed";
 
 class UserController {
-  async store(req, res) {
-    const schema = yup.object().shape({
-      name: yup.string().required(),
-      middleName: yup.string().notRequired(),
-      lastName: yup.string().notRequired(),
-      email: yup.string().email().required(),
-    });
 
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Please check if you give all the mandatory information' });
+  /* ---------- STORE ---------- */
+  async store(request, response) {
+
+  }
+
+  /* ---------- INDEX ---------- */
+  async index(request, response) {
+
+  }
+
+  /* ---------- SHOW ---------- */
+  async show(request, response) {
+    
+    const schema = yup.object().shape({
+      user_id: yup.string().required('user id required')
+    })
+
+    // validation
+    try {
+      await schema.validate(request.body);
+    } catch (err) {
+      return response.json({ status: statusFailed, error: { code: err.name, message: err.message } })
     }
 
     try {
-      const user = await User.create(req.body);
-
-      user.message = 'User created';
-
-      return res.json(user);
+      const data = await UserModel.getUser(request.body.user_id);
+      response.json({ status: statusSuccess, data: data })
     } catch (err) {
-      return res.status(500).json(err);
+      response.json({ status: statusFailed, error: { code: err.errno, message: err.code } })
     }
-  }
+   }
+
+  /* ---------- UPDATE ---------- */
+  async update(request, response) { }
+
+  /* ---------- DELETE ---------- */
+  async delete(request, response) { }
 }
 
 export default new UserController();
