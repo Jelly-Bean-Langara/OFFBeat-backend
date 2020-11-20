@@ -9,6 +9,9 @@ import PostController from './controllers/PostController';
 import PostCoverController from './controllers/PostCoverController';
 import PostVisibilityController from './controllers/PostVisibilityController';
 import UserController from './controllers/UserController';
+import MomentPhotosController from './controllers/MomentPhotosController';
+import ExploreController from './controllers/ExploreController';
+import SearchController from './controllers/SearchController';
 
 const routes = new Router();
 const uploadPostPicture = multer(multerPostConfig);
@@ -27,5 +30,11 @@ routes.get('/get-category-and-posts', CategoryPostController.show);
 routes.get('/get-categories-with-posts', CategoryPostController.index);
 routes.get('/get-post-cover', PostCoverController.show);
 routes.get('/get-post-by-id', PostController.show);
+routes.get('/get-moment-info', MomentController.show);
+routes.get('/get-moment-photos', MomentPhotosController.show);
+routes.put('/edit-moment', uploadPostPicture.array('photos', 8), MomentController.update);
+routes.delete('/delete-moment-from-post', MomentController.delete);
+routes.get('/get-explore', ExploreController.index);
+routes.get('/get-search', SearchController.index);
 
 export default routes;

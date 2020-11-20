@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import * as yup from 'yup';
 import Moment from '../models/Moment';
 
@@ -41,7 +42,86 @@ class MomentController {
     }
 
     try {
-      const result = await Moment.getAllByPostId(postId);
+      const moments = await Moment.getAllByPostId(postId);
+
+      const result = [];
+
+      await Promise.all(moments.map(async (moment) => {
+        const {
+          moment_id, moment_date, moment_description, moment_latitude, moment_longitude, moment_location_name, post_id,
+        } = moment;
+
+        const pictures = await Moment.getPhotos(moment_id);
+
+        const newDate = new Date(moment_date);
+
+        const momentObj = {
+          moment_id,
+          moment_day: newDate.getDate(),
+          moment_month: newDate.getMonth(),
+          moment_year: newDate.getFullYear(),
+          moment_description,
+          moment_latitude,
+          moment_longitude,
+          moment_location_name,
+          post_id,
+          pictures,
+        };
+
+        result.push(momentObj);
+      }));
+
+      return res.json(result);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+
+  async show(req, res) {
+    const { momentId } = req.query;
+
+    if (!momentId) {
+      return res.status(400).json({ error: 'You need to provide a moment ID' });
+    }
+
+    try {
+      const result = await Moment.getOneById(momentId);
+
+      return res.json(result[0]);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+
+  async update(req, res) {
+    const { momentId } = req.query;
+
+    if (!momentId) {
+      return res.status(400).json({ error: 'You need to provide a moment ID' });
+    }
+
+    try {
+      const result = await Moment.updateMoment(momentId, req.body);
+
+      result.message = 'Moment Updated!';
+
+      return res.json(result);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+
+  async delete(req, res) {
+    const { momentId } = req.query;
+
+    if (!momentId) {
+      return res.status(400).json({ error: 'You need to provide a moment ID' });
+    }
+
+    try {
+      const result = await Moment.deleteMoment(momentId);
+
+      result.message = 'Moment Deleted!';
 
       return res.json(result);
     } catch (err) {
