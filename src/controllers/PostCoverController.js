@@ -9,14 +9,9 @@ class PostCoverController {
     }
 
     try {
-      Moment.getAllByPostId(postId)
-        .then(async (result) => {
-          const moments = await Moment.getPhotos(result[0].moment_id);
-          return res.json(moments[0].moment_picture_file_name);
-        })
-        .catch((err) => res.status(500).json(err));
+      const result = await Moment.getCover(postId);
 
-      return '';
+      return res.json(result[0].post_cover);
     } catch (err) {
       return res.status(500).json(err);
     }
