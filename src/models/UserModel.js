@@ -7,7 +7,7 @@ class UserModel {
     connection.destroy();
   }
 
-  /* ------- ------- -------- --------------- createUser --------- ---------- -- ------------ --- -------- ---- */
+  /* ------- ------- -------- -------- createUser ---- ---------- -- ------------ --- --- */
   /* creates a user account */
   createUser(data) {
     const db = mysql.createPool(databaseConfig);
@@ -23,33 +23,27 @@ class UserModel {
     };
 
     return new Promise((resolve, reject) => {
-
       db.getConnection((err, connection) => {
         if (err) reject(err);
 
         connection.query(query, columns, (error, results) => {
-          console.log("UserModel -> createUser -> results", results)
+          console.log('UserModel -> createUser -> results', results);
           this.DestroyConnection(connection);
           if (error) reject(error);
 
           resolve(results);
         });
-
       });
-
     });
+  }
 
-  };
-
-
-  /* ------- ------- -------- --------------- checkUserAccount --------- ---------- -- ------------ --- -------- ---- */
+  /* ------- ------- --------  checkUserAccount --------- ---------- -- ------------ */
   /* check if user account exists */
   checkUserAccount(id) {
     const db = mysql.createPool(databaseConfig);
     const query = `SELECT EXISTS(SELECT * FROM users WHERE user_id=${id}) AS count`;
 
     return new Promise((resolve, reject) => {
-
       db.getConnection((err, connection) => {
         if (err) reject(err);
 
@@ -58,36 +52,29 @@ class UserModel {
           if (error) reject(error);
           resolve(results[0].count);
         });
-
       });
-
     });
+  }
 
-  };
-
-  /* ------- ------- -------- --------------- checkToken --------- ---------- -- ------------ --- -------- ---- */
+  /* ------- ------- --------  checkToken --------- ---------- -- ------------ */
   /* check if token (to corresponding user_id) exists */
   checkToken(user_id, token) {
     const db = mysql.createPool(databaseConfig);
     const query = `SELECT EXISTS(SELECT * FROM tokens WHERE token=${token}) AS count`;
 
     return new Promise((resolve, reject) => {
-
       db.getConnection((err, connection) => {
         if (err) reject(err);
 
         connection.query(query, (error, results) => {
           this.DestroyConnection(connection);
           if (error) reject(error);
-          console.log("rr => ", results);
+          console.log('rr => ', results);
           resolve(results);
         });
-
       });
-
     });
-
-  };
+  }
 
   /* ------- ------- -------- --------------- saveToken --------- ---------- -- ------------ --- -------- ---- */
   /* save refresh token */

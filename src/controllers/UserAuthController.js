@@ -48,15 +48,12 @@ class UserAuthController {
     console.log('hit')
     async function main() {
       const oAuth2Client = await getAuthenticatedClient();
-      console.log("UserAuthController -> main -> oAuth2Client", oAuth2Client)
 
       const refreshToken = oAuth2Client.credentials.refresh_token;
-      console.log("main -> refreshToken", refreshToken)
 
       const url = "https://www.googleapis.com/userinfo/v2/me"
 
       const resource = await oAuth2Client.request({ url });
-      console.log("main -> res", resource)
 
       try {
 
