@@ -60,6 +60,7 @@ class MomentController {
           moment_day: newDate.getDate(),
           moment_month: newDate.getMonth(),
           moment_year: newDate.getFullYear(),
+          moment_date,
           moment_description,
           moment_latitude,
           moment_longitude,
