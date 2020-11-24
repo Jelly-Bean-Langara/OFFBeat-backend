@@ -17,7 +17,7 @@ export default async (request, response, next) => {
   try {
     await schema.validate(request.body);
   } catch (err) {
-    return response.json({ status: statusFailed, error: { code: err.name, message: err.message } })
+    return response.status(400).json({ error: 'Please check if you give all the mandatory information' });
   }
 
   try {
@@ -31,7 +31,6 @@ export default async (request, response, next) => {
         "grant_type": "refresh_token",
       })
       .then(data => {
-        // console.log("data", data)
 
         const access_token = JSON.parse(data.text).access_token
 
@@ -43,29 +42,32 @@ export default async (request, response, next) => {
             // check if user exist in database (has account)
             const isUserExist = await UserModel.checkUserAccount(user_id);
             if (isUserExist == 0) {
-              response.json("either user account does not exist, or invalid token");
+              // response.json("either user account does not exist, or invalid token");
+              return response.status(500).json("either user account does not exist, or invalid token");
             } else {
               if (user_id === request.body.user_id) {
                 console.log("user authenticated!");
                 next();
               } else {
-                response.json("authentication failed!");
+                //response.json("authentication failed!");
+                console.log("authentication failed!");
+                return response.status(500).json("authentication failed!");
               }
             }
 
           }).catch(err => {
-            console.log("data ========> ", err)
-            response.json("authentication failed, invalid grant!")
+            console.log("authentication failed, invalid grant!")
+            return response.status(500).json(err);
           });
 
       }).catch(err => {
-        console.log("data ========> ", err)
-        response.json("authentication failed, invalid grant!")
+        console.log("authentication failed, invalid grant!")
+        return response.status(500).json(err);
       });
 
   } catch (error) {
-    console.log(error);
-    request.send("something went wrong!")
+    console.log("something went wrong!")
+    return response.status(500).json(err);
   }
 
 };
