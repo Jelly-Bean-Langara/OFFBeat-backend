@@ -22,8 +22,8 @@ class Post {
           connection.release();
           connection.destroy();
 
-          if (error) reject(error);
-
+          if (error){ reject(error);
+}
           resolve(results);
         });
       });
