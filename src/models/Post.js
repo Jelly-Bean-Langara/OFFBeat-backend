@@ -22,8 +22,9 @@ class Post {
           connection.release();
           connection.destroy();
 
-          if (error){ reject(error);
-}
+          if (error) {
+            reject(error);
+          }
           resolve(results);
         });
       });
@@ -83,7 +84,7 @@ class Post {
   getById(postId) {
     const db = mysql.createPool(databaseConfig);
 
-    const query = 'SELECT p.*, (SELECT COUNT(moment_id) FROM moments WHERE post_id = p.post_id) AS moments, (SELECT moment_id FROM moments WHERE moment_id = p.post_id LIMIT 1) AS moment, (SELECT moment_picture_file_name FROM moments_pictures WHERE moment_id = moment LIMIT 1) AS cover, (SELECT category_title FROM categories WHERE category_id = p.category_id) AS category_title FROM posts AS p WHERE p.post_id = ?';
+    const query = 'SELECT p.*, (SELECT COUNT(moment_id) FROM moments WHERE post_id = p.post_id) AS moments, (SELECT moment_id FROM moments WHERE post_id = p.post_id LIMIT 1) AS moment, (SELECT moment_picture_file_name FROM moments_pictures WHERE moment_id = moment LIMIT 1) AS cover, (SELECT category_title FROM categories WHERE category_id = p.category_id) AS category_title FROM posts AS p WHERE p.post_id = ?';
 
     return new Promise((resolve, reject) => {
       db.getConnection((err, connection) => {
