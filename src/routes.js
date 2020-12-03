@@ -14,7 +14,7 @@ import ExploreController from './controllers/ExploreController';
 import SearchController from './controllers/SearchController';
 
 import UserAuthController from './controllers/UserAuthController';
-import UserAuthMiddleware from './middlewares/UserAuthMiddleware'
+import UserAuthMiddleware from './middlewares/UserAuthMiddleware';
 
 const routes = new Router();
 const uploadPostPicture = multer(multerPostConfig);
@@ -28,7 +28,7 @@ routes.get('/oauth2callback', UserAuthController.oauth2callback);
 // get user details (required: user_id, token)
 routes.post('/users', UserAuthMiddleware, UserController.show);
 routes.get('/', (req, res) => { res.json({ message: 'hey' }); });
-routes.post('/create-post', UserAuthMiddleware, PostController.store);
+routes.post('/create-post', PostController.store);
 routes.post('/create-moment', uploadPostPicture.array('photos', 8), MomentController.store);
 routes.post('/create-category', CategoryController.store);
 // routes.post('/create-user', UserController.store);
